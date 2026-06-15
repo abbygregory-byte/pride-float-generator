@@ -175,11 +175,6 @@ function WorkflowStep({ number, title, bullets, note, action }) {
           <li key={i}>{bullet}</li>
         ))}
       </ul>
-      {note && (
-        <p className="mt-3 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-xs leading-relaxed text-slate-600">
-          {note}
-        </p>
-      )}
       {action && (
         <a
           href={action.href}
@@ -191,6 +186,11 @@ function WorkflowStep({ number, title, bullets, note, action }) {
           {action.label}
           <ExternalLinkIcon />
         </a>
+      )}
+      {note && (
+        <p className="mt-3 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-xs leading-relaxed text-slate-600">
+          {note}
+        </p>
       )}
     </li>
   )

@@ -39,7 +39,7 @@ CSS, typeset in Geist with Arial fallback.
    RESTRICTIONS`) — and closes with a `GOAL` summary block. The
    `DEPARTMENT SIGNAGE` section instructs ChatGPT to include a
    decorative **blank** sign panel integrated into the theme — no
-   text is rendered into the image. Team or department labeling, if
+   text is rendered into the image. Department/team labeling, if
    needed, happens downstream when the user renames the finished
    image before uploading to the **Pride at Zoro** Google Drive
    folder, keeping the generated concept itself reusable.
@@ -50,9 +50,8 @@ CSS, typeset in Geist with Arial fallback.
      to re-paste later.
 4. In ChatGPT: paste the prompt, generate the float concept image,
    download the result, rename it as `department_pridefloat` (e.g.
-   `creative services_pridefloat`) to identify your team or
-   department, and upload to the **Pride at Zoro** Google Drive
-   folder.
+   `creative services_pridefloat`) to identify your department/team
+   name, and upload to the **Pride at Zoro** Google Drive folder.
 
 ## Run it locally
 

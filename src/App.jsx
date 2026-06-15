@@ -131,7 +131,7 @@ function WorkflowBanner() {
               <code className="rounded bg-slate-100 px-1 py-0.5 text-xs text-slate-700">
                 department_pridefloat
               </code>{' '}
-              to clearly identify your team or department
+              to clearly identify your department/team name
               <br />
               <span className="text-xs text-slate-500">
                 e.g. creative services_pridefloat
@@ -143,7 +143,7 @@ function WorkflowBanner() {
             <>
               <strong className="font-semibold text-slate-800">Note:</strong>{' '}
               Any blank signage included in the float concept is intentional.
-              Creative Services will add department and team names during
+              Creative Services will add the department/team name during
               final production to ensure accuracy and consistency.
             </>
           }

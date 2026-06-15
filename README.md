@@ -31,18 +31,23 @@ CSS, typeset in Geist with Arial fallback.
 2. Click **Create My Prompt** → the app composes a ChatGPT-ready
    prompt that asks ChatGPT to design a complete parade float concept,
    copies it to the clipboard, and opens `chatgpt.com` in a new tab.
-   The prompt is organized as nine sections — opener, theme-specific
+   The prompt is organized as ten sections — opener, theme-specific
    guidance (preset environment + cues *or* the custom wrapper), then
-   seven uppercase headers (`TEMPLATE PRESERVATION`, `VIEWPOINT
-   REQUIREMENTS`, `DEPARTMENT SIGNAGE`, `PRIDE REPRESENTATION`,
-   `BACKGROUND REQUIREMENTS`, `PRESENTATION STYLE`, `CONTENT
-   RESTRICTIONS`) — and closes with a `GOAL` summary block. The
-   `DEPARTMENT SIGNAGE` section instructs ChatGPT to include a
-   decorative **blank** sign panel integrated into the theme — no
-   text is rendered into the image. Department/team labeling, if
-   needed, happens downstream when the user renames the finished
-   image before uploading to the **Pride at Zoro** Google Drive
-   folder, keeping the generated concept itself reusable.
+   eight uppercase headers (`TEXT RESTRICTIONS`, `FLOAT STRUCTURE`,
+   `VIEWPOINT REQUIREMENTS`, `DEPARTMENT SIGNAGE`, `PRIDE
+   REPRESENTATION`, `BACKGROUND REQUIREMENTS`, `PRESENTATION STYLE`,
+   `CONTENT RESTRICTIONS`) — and closes with a `GOAL` summary block.
+   `TEXT RESTRICTIONS` leads because text leakage (welcome signs,
+   road signs, decorative typography) was the dominant failure mode
+   at preview. `FLOAT STRUCTURE` describes the flatbed parade-float
+   form in pure text since the workflow no longer attaches a
+   template image to the chat. The `DEPARTMENT SIGNAGE` section
+   instructs ChatGPT to include a decorative **blank** sign panel
+   integrated into the theme — no text is rendered into the image.
+   Department/team labeling, if needed, happens downstream when the
+   user renames the finished image before uploading to the **Pride
+   at Zoro** Google Drive folder, keeping the generated concept
+   itself reusable.
 3. The prompt panel surfaces a single fallback action:
    - **Copy Prompt** — clipboard only, with an inline `Copied ✓`
      flash for ~2 s. Useful if the auto-copy on Create-My-Prompt

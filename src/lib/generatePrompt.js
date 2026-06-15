@@ -1,7 +1,7 @@
 // Pure, synchronous prompt generator for the Zoro Pride Float Studio.
 // Emits an opener, theme-specific guidance (preset env+cues *or* a
 // custom wrapper paragraph), then a fixed sequence of all-caps
-// sections covering text restrictions, template fidelity, viewpoint,
+// sections covering text restrictions, float structure, viewpoint,
 // signage, Pride expression, background, presentation style, and
 // content limits, closing with a summary block. Returns `null` when
 // `theme` is empty after trim.
@@ -11,6 +11,11 @@
 // typography, etc.) was the dominant failure mode at preview, so we
 // want it to be the first hard constraint ChatGPT reads after the
 // theme framing.
+//
+// FLOAT STRUCTURE describes the parade-float form purely in text —
+// the workflow no longer attaches a template image to the chat, so
+// ChatGPT has to build its mental model of the flatbed + wheels +
+// decorate-don't-replace constraint from this section alone.
 
 const CUSTOM_THEME_EXPRESSION =
   'Use the custom theme visually through large-scale parade float decorations, sculptural elements, color, texture, props, and symbolic imagery. Make the concept polished, dimensional, family-friendly, and suitable for a corporate Pride event.'
@@ -64,12 +69,11 @@ export function generatePrompt({
     '- Signs may exist as decorative objects but must remain completely blank.',
     '- The final image should contain zero readable text.',
     '',
-    'TEMPLATE PRESERVATION',
-    '- Use the attached float template as the structural base.',
-    '- Preserve the float shape, proportions, wheel locations, and overall silhouette.',
-    '- Preserve the side-profile appearance of the float.',
-    '- Decorate the float rather than redesigning it.',
-    '- The resulting image should clearly look like the same float template.',
+    'FLOAT STRUCTURE',
+    '- Design a single flatbed-style parade float with visible wheels at the front and rear.',
+    '- Keep the flatbed platform and wheels visible beneath the decorative elements.',
+    '- Decorate the float with theme-driven sculptural elements, foliage, props, and structural pieces — do not replace or reshape the flatbed parade-float form.',
+    '- Maintain consistent proportions: a horizontal flatbed wider than it is tall, with wheels visible underneath at the front and rear.',
     '',
     'VIEWPOINT REQUIREMENTS',
     '- Render the float in a straight side elevation view.',
@@ -134,7 +138,6 @@ export function generatePrompt({
     '',
     'The generated image should be:',
     '- A complete parade float concept.',
-    '- Based on the provided float template.',
     '- Side-profile and structurally consistent.',
     '- Professional and workplace-appropriate.',
     '- Driven by a clear environmental theme.',

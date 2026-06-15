@@ -22,10 +22,10 @@ Steps
 3. Paste the contents of prompt.txt.
 4. Let ChatGPT generate a complete parade float concept image.
 5. Download the generated image.
-6. Rename the downloaded file to clearly identify your team or department
-   (e.g. creative-services-let-love-grow.png) so Creative Services can
-   quickly attribute submissions without relying on text in the image.
-7. Upload the renamed image to the Creative Services Google Drive folder:
+6. Rename the downloaded file using the format department_pridefloat
+   (e.g. creative services_pridefloat) so Creative Services can quickly
+   attribute submissions without relying on text in the image.
+7. Upload the renamed image to the Pride at Zoro Google Drive folder:
    https://drive.google.com/drive/folders/1UmqZYJKohutPSlK_EjSsok0yq69rp4V4
 
 Reminders

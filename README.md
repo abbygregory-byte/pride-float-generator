@@ -42,8 +42,8 @@ CSS, typeset in Geist with Arial fallback.
    decorative **blank** sign panel integrated into the theme — no
    text is rendered into the image. Team or department labeling, if
    needed, happens downstream when the user renames the finished
-   image before uploading to Creative Services, keeping the generated
-   concept itself reusable.
+   image before uploading to the **Pride at Zoro** Google Drive
+   folder, keeping the generated concept itself reusable.
 3. Use one of three actions on the prompt panel:
    - **Create My Prompt** *(primary, in the form)* — opens
      `chatgpt.com` in a new tab, copies the prompt to the clipboard,
@@ -55,8 +55,9 @@ CSS, typeset in Geist with Arial fallback.
      for ~2 s.
 4. In ChatGPT: upload the two reference PNGs, paste the prompt,
    generate the float concept image, download the result, rename it
-   to identify your team (e.g. `creative-services-let-love-grow.png`),
-   and upload to the Creative Services Google Drive folder.
+   using the format `department_pridefloat` (e.g.
+   `creative services_pridefloat`), and upload to the **Pride at
+   Zoro** Google Drive folder.
 
 ## Input pack contents
 

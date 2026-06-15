@@ -134,12 +134,12 @@ function WorkflowBanner() {
             <>
               Rename the downloaded file as{' '}
               <code className="rounded bg-slate-100 px-1 py-0.5 text-xs text-slate-700">
-                department_pridefloat
+                Department_Pride_Float
               </code>{' '}
               to clearly identify your department/team name
               <br />
               <span className="text-xs text-slate-500">
-                e.g. creative services_pridefloat
+                e.g. Creative_Services_Pride_Float
               </span>
             </>,
             'Upload the image to the Pride at Zoro Google Drive folder',

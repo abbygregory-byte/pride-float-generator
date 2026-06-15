@@ -139,6 +139,14 @@ function WorkflowBanner() {
             </>,
             'Upload the image to the Pride at Zoro Google Drive folder',
           ]}
+          note={
+            <>
+              <strong className="font-semibold text-slate-800">Note:</strong>{' '}
+              Any blank signage included in the float concept is intentional.
+              Creative Services will add department and team names during
+              final production to ensure accuracy and consistency.
+            </>
+          }
           action={{
             href: GOOGLE_DRIVE_URL,
             label: 'Open Google Drive Folder',
@@ -149,7 +157,7 @@ function WorkflowBanner() {
   )
 }
 
-function WorkflowStep({ number, title, bullets, action }) {
+function WorkflowStep({ number, title, bullets, note, action }) {
   return (
     <li className="flex flex-col">
       <div className="flex items-center gap-3">
@@ -167,6 +175,11 @@ function WorkflowStep({ number, title, bullets, action }) {
           <li key={i}>{bullet}</li>
         ))}
       </ul>
+      {note && (
+        <p className="mt-3 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-xs leading-relaxed text-slate-600">
+          {note}
+        </p>
+      )}
       {action && (
         <a
           href={action.href}

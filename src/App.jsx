@@ -2,11 +2,10 @@ import React, { useMemo, useState } from 'react'
 import FloatForm from './components/FloatForm.jsx'
 import PromptPanel from './components/PromptPanel.jsx'
 import { generatePrompt } from './lib/generatePrompt.js'
-import buildInputPack from './lib/buildInputPack.js'
 
 // External destinations the workflow hands users off to. Centralized
-// here so the WorkflowBanner step 4 link and the auto-open behavior on
-// Generate reference the same source of truth.
+// here so the WorkflowBanner Submit-step link and the auto-open
+// behavior on Create-My-Prompt reference the same source of truth.
 const CHATGPT_URL = 'https://chatgpt.com/'
 const GOOGLE_DRIVE_URL =
   'https://drive.google.com/drive/folders/1UmqZYJKohutPSlK_EjSsok0yq69rp4V4'
@@ -18,12 +17,11 @@ const GOOGLE_DRIVE_URL =
 const RIBBON_TEAL = '#0B485B'
 
 export default function App() {
-  // Snapshot of the form payload the user committed to via Generate
-  // Prompt — `{ theme, environment, cues, isCustom }`. Decoupled from
-  // FloatForm's live state so editing the form post-generation can't
-  // desync the rendered prompt or the slugified ZIP filename. The
-  // FloatForm owns its own form state internally and emits this
-  // payload via `onSubmit`.
+  // Snapshot of the form payload the user committed to via Create
+  // My Prompt — `{ theme, environment, cues, isCustom }`. Decoupled
+  // from FloatForm's live state so editing the form post-generation
+  // can't desync the rendered prompt. The FloatForm owns its own form
+  // state internally and emits this payload via `onSubmit`.
   const [generated, setGenerated] = useState(null)
 
   const prompt = useMemo(
@@ -43,8 +41,8 @@ export default function App() {
     if (!promptText) return
 
     // Open ChatGPT FIRST, synchronously, while we're still inside the
-    // user-gesture stack. Async work (clipboard / fetch / ZIP build)
-    // before this call would let popup blockers cancel the new tab.
+    // user-gesture stack. Doing async work (clipboard write) before
+    // this call would let popup blockers cancel the new tab.
     try {
       window.open(CHATGPT_URL, '_blank', 'noopener,noreferrer')
     } catch (err) {
@@ -53,31 +51,14 @@ export default function App() {
 
     setGenerated(next)
 
-    // Fire-and-forget the two side effects users expect from a single
-    // Generate Prompt click: clipboard write + ZIP download. Failures
-    // are logged silently; the prompt panel's secondary buttons exist
-    // as manual fallbacks.
+    // Copy the prompt to the clipboard so the user can paste it into
+    // ChatGPT in one motion. Failures are logged silently; the prompt
+    // panel's Copy Prompt button is the manual fallback.
     if (navigator?.clipboard?.writeText) {
       navigator.clipboard.writeText(promptText).catch((err) => {
         console.warn('Clipboard write failed', err)
       })
     }
-
-    buildInputPack({
-      prompt: promptText,
-      theme: next.theme,
-    })
-      .then(({ blob, filename }) => {
-        const url = URL.createObjectURL(blob)
-        const a = document.createElement('a')
-        a.href = url
-        a.download = filename
-        document.body.appendChild(a)
-        a.click()
-        a.remove()
-        setTimeout(() => URL.revokeObjectURL(url), 1000)
-      })
-      .catch((err) => console.warn('ZIP download failed', err))
   }
 
   return (
@@ -89,10 +70,7 @@ export default function App() {
 
         <div className="mt-6 grid grid-cols-1 items-start gap-6 lg:grid-cols-2 lg:gap-6">
           <FloatForm onSubmit={handleGenerate} />
-          <PromptPanel
-            prompt={prompt}
-            theme={generated?.theme ?? ''}
-          />
+          <PromptPanel prompt={prompt} />
         </div>
       </main>
     </div>
@@ -101,8 +79,8 @@ export default function App() {
 
 // Full-width horizontal step row at the top of the page. The detailed
 // explainer for the workflow — readable left-to-right on desktop,
-// stacked on mobile. Step 4 carries the Submit handoff (Google Drive
-// folder link) so the closing action is visible at a glance.
+// stacked on mobile. The Submit step carries the Google Drive folder
+// link so the closing action is visible at a glance.
 function WorkflowBanner() {
   return (
     <section
@@ -120,12 +98,12 @@ function WorkflowBanner() {
       >
         How It Works
       </h2>
-      <ol className="mt-4 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4 lg:gap-7">
+      <ol className="mt-4 grid grid-cols-1 gap-5 sm:grid-cols-3 lg:gap-7">
         <WorkflowStep
           number={1}
-          title="Design"
+          title="Design Your Float"
           bullets={[
-            'Pick a curated float theme or create your own',
+            'Choose a curated theme or create your own',
             <>
               Click{' '}
               <strong className="font-semibold text-slate-900">
@@ -136,37 +114,19 @@ function WorkflowBanner() {
         />
         <WorkflowStep
           number={2}
-          title="Generate"
+          title="Create in ChatGPT"
           bullets={[
-            'Prompt copies to clipboard',
-            'ZIP file downloads to your device automatically',
-            'ChatGPT opens',
+            'Open ChatGPT',
+            'Paste the copied prompt',
+            'Generate your float concept',
+            'Download the completed image',
           ]}
         />
         <WorkflowStep
           number={3}
-          title="Create in ChatGPT"
-          bullets={[
-            'Upload the downloaded ZIP file',
-            'Paste the copied prompt',
-            'Generate your float concept',
-          ]}
-        />
-        <WorkflowStep
-          number={4}
           title="Submit"
           bullets={[
-            'Download your completed float concept from ChatGPT',
-            <>
-              Rename the file as{' '}
-              <code className="rounded bg-slate-100 px-1 py-0.5 text-xs text-slate-700">
-                department_pridefloat
-              </code>
-              <br />
-              <span className="text-xs text-slate-500">
-                e.g. creative services_pridefloat
-              </span>
-            </>,
+            'Rename the downloaded file to clearly identify your department or team',
             'Upload the image to the Pride at Zoro Google Drive folder',
           ]}
           action={{

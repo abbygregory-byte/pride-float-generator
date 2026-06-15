@@ -31,7 +31,7 @@ async function ensureOkBlob(res) {
 // fetch failure so the calling component can surface a clear "input
 // pack failed" status row in the modal (or inline flash, for the
 // standalone Download Input Pack action).
-export async function buildInputPack({ prompt, teamName, theme } = {}) {
+export async function buildInputPack({ prompt, theme } = {}) {
   const zip = new JSZip()
 
   zip.file('prompt.txt', prompt ?? '')
@@ -53,15 +53,13 @@ export async function buildInputPack({ prompt, teamName, theme } = {}) {
     compressionOptions: { level: 6 },
   })
 
-  // Filename: prefer the team/theme slug pair so the user has unique
-  // filenames per generation; fall back to a generic name if either
-  // slug source is empty (defensive — callers should always pass both).
-  const teamSlug = (teamName ?? '').trim() ? slugify(teamName) : ''
+  // Filename: derived from the theme slug so each generation lands as
+  // its own file. Falls back to a generic name when no theme is
+  // provided (defensive — callers should always pass one).
   const themeSlug = (theme ?? '').trim() ? slugify(theme) : ''
-  const filename =
-    teamSlug && themeSlug
-      ? `pride-float-input-pack-${teamSlug}-${themeSlug}.zip`
-      : FALLBACK_FILENAME
+  const filename = themeSlug
+    ? `pride-float-input-pack-${themeSlug}.zip`
+    : FALLBACK_FILENAME
 
   return { blob, filename }
 }

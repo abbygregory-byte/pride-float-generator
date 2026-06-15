@@ -3,7 +3,7 @@ import buildInputPack from '../lib/buildInputPack.js'
 
 const FLASH_MS = 2000
 
-export default function PromptPanel({ prompt, teamName = '', theme = '' }) {
+export default function PromptPanel({ prompt, theme = '' }) {
   const [copied, setCopied] = useState(false)
   // Standalone-download-button state. 'idle' is the resting label;
   // 'success' / 'error' flash for FLASH_MS then reset to 'idle'.
@@ -86,7 +86,7 @@ export default function PromptPanel({ prompt, teamName = '', theme = '' }) {
     if (!prompt || isDownloading) return
     setIsDownloading(true)
     try {
-      const result = await buildInputPack({ prompt, teamName, theme })
+      const result = await buildInputPack({ prompt, theme })
       triggerZipDownload(result)
       flashDownload('success')
     } catch {
@@ -138,8 +138,7 @@ export default function PromptPanel({ prompt, teamName = '', theme = '' }) {
             Your generated ChatGPT prompt will appear here.
           </p>
           <p className="mt-1.5 text-xs leading-relaxed text-slate-500">
-            Enter your department or team name and choose a theme to get
-            started.
+            Choose a theme to get started.
           </p>
         </div>
       ) : (

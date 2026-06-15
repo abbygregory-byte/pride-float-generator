@@ -10,7 +10,3 @@ export function slugify(s) {
       .replace(/^-+|-+$/g, '') || 'float'
   )
 }
-
-export function buildFilename(teamName, theme) {
-  return `pride-float-${slugify(teamName)}-${slugify(theme)}.png`
-}

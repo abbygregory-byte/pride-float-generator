@@ -13,15 +13,15 @@ CSS, typeset in Geist with Arial fallback.
 
 ## How it works
 
-1. Fill in **Team name** + **Theme** in the left-hand form. The Theme
-   field is a curated picker grouped into three families — **Growth
-   & Belonging**, **Light & Visibility**, **Connection & Community**
-   — covering 6 presets total. Each curated preset contributes both a
-   structural **environment** label (e.g. *Botanical Garden*,
-   *Lantern Festival*, *Mosaic Plaza*) and a **visual cues** array
-   (concrete imagery anchors like *floral arches*, *floating
-   lanterns*, *stained glass structures*). The generator renders
-   these as two adjacent sentences in the prompt:
+1. Pick a **Theme** in the left-hand form. The Theme field is a
+   curated picker grouped into three families — **Growth & Belonging**,
+   **Light & Visibility**, **Connection & Community** — covering 6
+   presets total. Each curated preset contributes both a structural
+   **environment** label (e.g. *Botanical Garden*, *Lantern Festival*,
+   *Mosaic Plaza*) and a **visual cues** array (concrete imagery
+   anchors like *floral arches*, *floating lanterns*, *stained glass
+   structures*). The generator renders these as two adjacent sentences
+   in the prompt:
    `Set this float in a {environment} environment.` /
    `Visual cues: {cue1, cue2, …}.`
    Below the curated dropdown, a separate **Or Create Your Own
@@ -29,9 +29,9 @@ CSS, typeset in Geist with Arial fallback.
    for a tall free-form textarea (with a few example seeds shown
    beneath). Custom themes get a wrapper paragraph instead of the
    environment + cues sentences, keeping vague ideas on-brief.
-2. Click **Generate Prompt** → the app composes a ChatGPT-ready prompt
-   that asks ChatGPT to design a complete parade float concept using
-   the attached template as the structural base. The prompt is
+2. Click **Create My Prompt** → the app composes a ChatGPT-ready
+   prompt that asks ChatGPT to design a complete parade float concept
+   using the attached template as the structural base. The prompt is
    organized as nine sections — opener, theme-specific guidance
    (preset environment + cues *or* the custom wrapper), then seven
    uppercase headers (`TEMPLATE PRESERVATION`, `VIEWPOINT
@@ -40,29 +40,28 @@ CSS, typeset in Geist with Arial fallback.
    RESTRICTIONS`) — and closes with a `GOAL` summary block. The
    `DEPARTMENT SIGNAGE` section instructs ChatGPT to include a
    decorative **blank** sign panel integrated into the theme — no
-   text is rendered into the image. Department labeling, if needed,
-   happens downstream (e.g. in Creative Services), keeping the
-   generated concept reusable.
+   text is rendered into the image. Team or department labeling, if
+   needed, happens downstream when the user renames the finished
+   image before uploading to Creative Services, keeping the generated
+   concept itself reusable.
 3. Use one of three actions on the prompt panel:
-   - **Generate in ChatGPT** *(primary)* — opens `chatgpt.com` in a
-     new tab, copies the prompt to the clipboard, and downloads the
-     input pack ZIP. The button shows `Preparing input pack…` while
-     the ZIP builds, then returns silently to its idle state. No
-     post-action modal or toast — fall back to the two secondary
-     buttons below if anything is missed.
+   - **Create My Prompt** *(primary, in the form)* — opens
+     `chatgpt.com` in a new tab, copies the prompt to the clipboard,
+     and downloads the input pack ZIP in a single click.
    - **Copy Prompt** *(secondary)* — clipboard only, with an inline
      `Copied ✓` flash for ~2 s.
-   - **Download Input Pack** *(secondary)* — ZIP only, with an inline
+   - **Download ZIP File** *(secondary)* — ZIP only, with an inline
      `Downloaded ✓` (or `Download failed — try again` in rose) flash
      for ~2 s.
 4. In ChatGPT: upload the two reference PNGs, paste the prompt,
-   generate the float concept image, download the result.
+   generate the float concept image, download the result, rename it
+   to identify your team (e.g. `creative-services-let-love-grow.png`),
+   and upload to the Creative Services Google Drive folder.
 
 ## Input pack contents
 
-The downloaded ZIP is named
-`pride-float-input-pack-{teamSlug}-{themeSlug}.zip` and contains four
-files:
+The downloaded ZIP is named `pride-float-input-pack-{themeSlug}.zip`
+and contains four files:
 
 | File                              | Role                                                              |
 | --------------------------------- | ----------------------------------------------------------------- |
@@ -100,8 +99,8 @@ src/
   main.jsx                         React entry
   index.css                        Tailwind layers + component classes
   components/
-    FloatForm.jsx                  team / theme form + Generate Prompt
-    PromptPanel.jsx                generated prompt + 3 action buttons
+    FloatForm.jsx                  theme form + Create My Prompt
+    PromptPanel.jsx                generated prompt + 2 action buttons
   lib/
     generatePrompt.js              float-concept prompt template
     buildInputPack.js              ZIP builder (prompt + instructions
@@ -130,17 +129,18 @@ vite.config.js                     plain Vite + react()
 
 ## App-level state
 
-`App.jsx` is intentionally tiny. Two pieces of state:
+`App.jsx` is intentionally tiny. One piece of state:
 
 ```
-values:     { teamName, theme }                 form bindings (live)
-generated:  null | { teamName, theme }          Generate-time snapshot
+generated:  null | { theme, environment, cues, isCustom }   Generate-time snapshot
 ```
 
-The prompt is derived via `useMemo(() => generatePrompt(generated), …)`
-so editing the form post-generation can't desync the prompt or the
-slugified ZIP filename — both stay tied to `generated`, which only
-updates when the user clicks **Generate Prompt** with non-empty inputs.
+`FloatForm` owns its own form bindings internally and emits a single
+payload via `onSubmit`. The prompt is derived via
+`useMemo(() => generatePrompt(generated), …)` so editing the form
+post-generation can't desync the prompt or the slugified ZIP
+filename — both stay tied to `generated`, which only updates when the
+user clicks **Create My Prompt** with a valid theme.
 
 ## Accessibility
 

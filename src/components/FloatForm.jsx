@@ -36,31 +36,27 @@ const CUSTOM_THEME_EXAMPLES = [
 
 // Float-form state lives entirely inside this component. On submit
 // the form emits a single payload object —
-// `{ teamName, theme, environment, cues, isCustom }` — that the
-// parent stores in its Generate-time snapshot.
+// `{ theme, environment, cues, isCustom }` — that the parent stores
+// in its Generate-time snapshot.
 //
 // Custom themes are gated by a checkbox in a visually distinct
 // section below the curated dropdown. While the checkbox is on, the
 // curated <select> above is disabled and the textarea takes over.
 
 export default function FloatForm({ onSubmit }) {
-  const [teamName, setTeamName] = useState('')
   const [selectedThemeId, setSelectedThemeId] = useState('')
   const [useCustomTheme, setUseCustomTheme] = useState(false)
   const [customThemeText, setCustomThemeText] = useState('')
 
-  const canSubmit =
-    teamName.trim().length > 0 &&
-    (useCustomTheme
-      ? customThemeText.trim().length > 0
-      : selectedThemeId.length > 0 && findThemeById(selectedThemeId) !== null)
+  const canSubmit = useCustomTheme
+    ? customThemeText.trim().length > 0
+    : selectedThemeId.length > 0 && findThemeById(selectedThemeId) !== null
 
   const handleSubmit = (e) => {
     e.preventDefault()
     if (!canSubmit) return
     if (useCustomTheme) {
       onSubmit({
-        teamName: teamName.trim(),
         theme: customThemeText.trim(),
         environment: null,
         cues: null,
@@ -69,7 +65,6 @@ export default function FloatForm({ onSubmit }) {
     } else {
       const preset = findThemeById(selectedThemeId)
       onSubmit({
-        teamName: teamName.trim(),
         theme: preset.label,
         environment: preset.environment,
         cues: preset.cues,
@@ -97,22 +92,6 @@ export default function FloatForm({ onSubmit }) {
       </div>
 
       <div className="grid grid-cols-1 gap-4">
-        <div>
-          <label htmlFor="teamName" className="field-label">
-            Enter your Department or Team Name
-            <RequiredMark />
-          </label>
-          <input
-            id="teamName"
-            type="text"
-            required
-            placeholder="e.g. Engineering, People Ops, Brand"
-            className="field-input"
-            value={teamName}
-            onChange={(e) => setTeamName(e.target.value)}
-          />
-        </div>
-
         <div>
           <label htmlFor="theme" className="field-label">
             Float Theme

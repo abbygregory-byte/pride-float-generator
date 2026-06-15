@@ -3,26 +3,24 @@
 // custom wrapper paragraph), then a fixed sequence of all-caps
 // sections covering template fidelity, viewpoint, signage, Pride
 // expression, background, presentation style, and content limits,
-// closing with a summary block. Returns `null` when `teamName` or
-// `theme` is empty after trim.
+// closing with a summary block. Returns `null` when `theme` is empty
+// after trim.
 
 const CUSTOM_THEME_EXPRESSION =
   'Use the custom theme visually through large-scale parade float decorations, sculptural elements, color, texture, props, and symbolic imagery. Make the concept polished, dimensional, family-friendly, and suitable for a corporate Pride event.'
 
 export function generatePrompt({
-  teamName,
   theme,
   environment = null,
   cues = null,
   isCustom = false,
 } = {}) {
-  const team = (teamName ?? '').trim()
   const themeText = (theme ?? '').trim()
 
-  if (!team || !themeText) return null
+  if (!themeText) return null
 
   const lines = [
-    `Design a Pride parade float concept for the ${team} team at Zoro, themed "${themeText}".`,
+    `Design a Pride parade float concept for Zoro, themed "${themeText}".`,
     '',
   ]
 

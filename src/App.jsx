@@ -19,11 +19,11 @@ const RIBBON_TEAL = '#0B485B'
 
 export default function App() {
   // Snapshot of the form payload the user committed to via Generate
-  // Prompt — `{ teamName, theme, environment, cues, isCustom }`.
-  // Decoupled from FloatForm's live state so editing the form
-  // post-generation can't desync the rendered prompt or the slugified
-  // ZIP filename. The FloatForm owns its own form state internally
-  // and emits this payload via `onSubmit`.
+  // Prompt — `{ theme, environment, cues, isCustom }`. Decoupled from
+  // FloatForm's live state so editing the form post-generation can't
+  // desync the rendered prompt or the slugified ZIP filename. The
+  // FloatForm owns its own form state internally and emits this
+  // payload via `onSubmit`.
   const [generated, setGenerated] = useState(null)
 
   const prompt = useMemo(
@@ -32,9 +32,8 @@ export default function App() {
   )
 
   const handleGenerate = (payload) => {
-    if (!payload?.teamName || !payload?.theme) return
+    if (!payload?.theme) return
     const next = {
-      teamName: payload.teamName,
       theme: payload.theme,
       environment: payload.environment ?? null,
       cues: Array.isArray(payload.cues) ? payload.cues : null,
@@ -66,7 +65,6 @@ export default function App() {
 
     buildInputPack({
       prompt: promptText,
-      teamName: next.teamName,
       theme: next.theme,
     })
       .then(({ blob, filename }) => {
@@ -93,7 +91,6 @@ export default function App() {
           <FloatForm onSubmit={handleGenerate} />
           <PromptPanel
             prompt={prompt}
-            teamName={generated?.teamName ?? ''}
             theme={generated?.theme ?? ''}
           />
         </div>
@@ -127,18 +124,20 @@ function WorkflowBanner() {
         <WorkflowStep
           number={1}
           title="Design"
-          bullets={['Enter team name', 'Pick a float theme or create your own']}
-        />
-        <WorkflowStep
-          number={2}
-          title="Generate"
           bullets={[
+            'Pick a curated float theme or create your own',
             <>
               Click{' '}
               <strong className="font-semibold text-slate-900">
                 Create My Prompt
               </strong>
             </>,
+          ]}
+        />
+        <WorkflowStep
+          number={2}
+          title="Generate"
+          bullets={[
             'Prompt copies to clipboard',
             'ZIP file downloads to your device automatically',
             'ChatGPT opens',
@@ -151,13 +150,20 @@ function WorkflowBanner() {
             'Upload the downloaded ZIP file',
             'Paste the copied prompt',
             'Generate your float concept',
-            'Download the completed image',
           ]}
         />
         <WorkflowStep
           number={4}
           title="Submit"
           bullets={[
+            'Download your completed float concept from ChatGPT',
+            <>
+              Rename the file to identify your team
+              <br />
+              <span className="text-xs text-slate-500">
+                e.g. creative-services-let-love-grow.png
+              </span>
+            </>,
             'Upload the image to the Creative Services Google Drive folder',
           ]}
           action={{

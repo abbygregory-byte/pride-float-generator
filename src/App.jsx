@@ -114,11 +114,16 @@ function WorkflowBanner() {
         />
         <WorkflowStep
           number={2}
-          title="Create in ChatGPT"
+          title="Generate Visual of Float Using ChatGPT"
           bullets={[
             'Open ChatGPT',
-            'Paste the copied prompt',
-            'Generate your float concept',
+            <>
+              Paste the copied prompt and hit{' '}
+              <kbd className="rounded border border-slate-300 bg-slate-100 px-1.5 py-0.5 font-mono text-[11px] text-slate-700">
+                Enter
+              </kbd>{' '}
+              (or click ChatGPT&rsquo;s send arrow) to submit it
+            </>,
             'Download the completed image',
           ]}
         />

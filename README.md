@@ -53,8 +53,9 @@ CSS, typeset in Geist with Arial fallback.
      flash for ~2 s. Useful if the auto-copy on Create-My-Prompt
      misses (e.g. clipboard permission denied) or if the user wants
      to re-paste later.
-4. In ChatGPT: paste the prompt, generate the float concept image,
-   download the result, rename it as `department_pridefloat` (e.g.
+4. In ChatGPT: paste the prompt and hit `Enter` (or click the send
+   arrow) to submit it, download the resulting float concept image,
+   rename it as `department_pridefloat` (e.g.
    `creative services_pridefloat`) to identify your department/team
    name, and upload to the **Pride at Zoro** Google Drive folder.
 

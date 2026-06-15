@@ -230,7 +230,7 @@ function Header() {
           <div className="flex flex-col items-center text-center">
             <Logo />
             <h1 className="mt-3 font-display text-xl font-medium leading-tight text-slate-900 sm:text-2xl lg:text-3xl">
-              Pride at Zoro Float Prompt Generator
+              Zoro Pride Float Prompt Generator
             </h1>
           </div>
         </div>

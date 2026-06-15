@@ -1,4 +1,4 @@
-// Pure, synchronous prompt generator for the Pride at Zoro Float Studio.
+// Pure, synchronous prompt generator for the Zoro Pride Float Studio.
 // Emits an opener, theme-specific guidance (preset env+cues *or* a
 // custom wrapper paragraph), then a fixed sequence of all-caps
 // sections covering text restrictions, float structure, viewpoint,

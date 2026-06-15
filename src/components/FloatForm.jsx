@@ -85,9 +85,14 @@ export default function FloatForm({ onSubmit }) {
       onSubmit={handleSubmit}
       className="surface-card relative overflow-hidden p-5 sm:p-7"
     >
+      <span
+        aria-hidden="true"
+        className="absolute inset-x-0 top-0 h-1"
+        style={{ backgroundColor: '#0B485B' }}
+      />
       <div className="mb-5">
         <h2 className="text-lg font-medium text-slate-900 tracking-tight">
-          Design your Float
+          Design Your Float
         </h2>
       </div>
 
@@ -95,7 +100,7 @@ export default function FloatForm({ onSubmit }) {
         <div>
           <label htmlFor="teamName" className="field-label">
             Enter your Department or Team Name
-            <span className="ml-1 text-xs font-normal text-slate-400">Required</span>
+            <RequiredMark />
           </label>
           <input
             id="teamName"
@@ -111,7 +116,7 @@ export default function FloatForm({ onSubmit }) {
         <div>
           <label htmlFor="theme" className="field-label">
             Float Theme
-            <span className="ml-1 text-xs font-normal text-slate-400">Required</span>
+            <RequiredMark />
           </label>
           <select
             id="theme"
@@ -148,7 +153,7 @@ export default function FloatForm({ onSubmit }) {
         <label className="flex cursor-pointer items-center gap-2 text-sm text-slate-700">
           <input
             type="checkbox"
-            className="h-4 w-4 rounded border-slate-300 text-slate-900 focus:ring-slate-900"
+            className="h-4 w-4 rounded border-slate-300 text-brand-teal focus:ring-brand-teal"
             checked={useCustomTheme}
             onChange={(e) => setUseCustomTheme(e.target.checked)}
           />
@@ -160,7 +165,7 @@ export default function FloatForm({ onSubmit }) {
             <div>
               <label htmlFor="customTheme" className="field-label">
                 Custom Theme
-                <span className="ml-1 text-xs font-normal text-slate-400">Required</span>
+                <RequiredMark />
               </label>
               <p className="mt-1 mb-2 text-xs text-slate-500">
                 {`Describe the environment, scenery, structures, props, colors, and atmosphere you want the float to be inspired by. The more visual detail you provide, the stronger the concept will be.`}
@@ -186,7 +191,7 @@ export default function FloatForm({ onSubmit }) {
                     key={ex.title}
                     className="flex items-baseline gap-2"
                   >
-                    <span aria-hidden="true" className="text-slate-400">
+                    <span aria-hidden="true" className="text-brand-plum">
                       •
                     </span>
                     <span className="leading-snug">
@@ -206,18 +211,26 @@ export default function FloatForm({ onSubmit }) {
       <button
         type="submit"
         disabled={!canSubmit}
-        className="group relative mt-6 inline-flex w-full items-center justify-center overflow-hidden rounded-xl bg-slate-900 px-6 py-3.5 text-base font-semibold text-white shadow-sm transition hover:bg-slate-800 active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-50"
+        className="group relative mt-6 inline-flex w-full items-center justify-center overflow-hidden rounded-xl bg-brand-teal px-6 py-3.5 text-base font-semibold text-white shadow-sm transition hover:bg-brand-teal-dark active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-50"
       >
-        <span
-          aria-hidden="true"
-          className="bg-pride-gradient absolute inset-x-0 top-0 h-0.5"
-        />
         <span className="relative flex items-center gap-2">
           <Sparkle />
-          Generate Prompt
+          Create My Prompt
         </span>
       </button>
     </form>
+  )
+}
+
+function RequiredMark() {
+  return (
+    <span
+      className="ml-0.5 text-rose-500"
+      aria-hidden="true"
+      title="Required"
+    >
+      *
+    </span>
   )
 }
 

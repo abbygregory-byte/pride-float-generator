@@ -117,6 +117,11 @@ export default function PromptPanel({ prompt, teamName = '', theme = '' }) {
       className="surface-card relative overflow-hidden p-5 sm:p-6"
       aria-labelledby="prompt-panel-title"
     >
+      <span
+        aria-hidden="true"
+        className="absolute inset-x-0 top-0 h-1"
+        style={{ backgroundColor: '#0B485B' }}
+      />
       <header className="mb-3">
         <h2
           id="prompt-panel-title"
@@ -127,10 +132,16 @@ export default function PromptPanel({ prompt, teamName = '', theme = '' }) {
       </header>
 
       {!isReady ? (
-        <div
-          aria-hidden="true"
-          className="h-44 rounded-xl border border-dashed border-slate-200 bg-slate-50/60"
-        />
+        <div className="flex h-44 flex-col items-center justify-center rounded-xl border border-dashed border-slate-200 bg-brand-plum-soft/60 px-6 text-center">
+          <EmptyStateIcon />
+          <p className="mt-2 text-sm font-medium text-slate-700">
+            Your generated ChatGPT prompt will appear here.
+          </p>
+          <p className="mt-1.5 text-xs leading-relaxed text-slate-500">
+            Enter your department or team name and choose a theme to get
+            started.
+          </p>
+        </div>
       ) : (
         <>
           <textarea
@@ -169,3 +180,25 @@ export default function PromptPanel({ prompt, teamName = '', theme = '' }) {
   )
 }
 
+function EmptyStateIcon() {
+  return (
+    <svg
+      width="22"
+      height="22"
+      viewBox="0 0 24 24"
+      fill="none"
+      aria-hidden="true"
+      className="text-brand-plum"
+    >
+      <path
+        d="M12 3l1.8 4.7L18.5 9.5l-4.7 1.8L12 16l-1.8-4.7L5.5 9.5l4.7-1.8L12 3z"
+        fill="currentColor"
+      />
+      <path
+        d="M19 14l.9 2.3 2.3.9-2.3.9L19 20.5l-.9-2.4-2.3-.9 2.3-.9L19 14z"
+        fill="currentColor"
+        opacity="0.6"
+      />
+    </svg>
+  )
+}

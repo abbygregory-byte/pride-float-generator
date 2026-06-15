@@ -14,6 +14,20 @@ export default {
           pink: '#FF6FB5',
           turquoise: '#00C2B8',
         },
+        brand: {
+          teal: {
+            DEFAULT: '#0B485B',
+            dark: '#083A4A',
+            soft: '#E5F0F3',
+          },
+          plum: {
+            DEFAULT: '#6B3F58',
+            soft: '#F4ECF1',
+          },
+          gold: {
+            DEFAULT: '#B8862E',
+          },
+        },
       },
       fontFamily: {
         sans: ['"Geist"', 'Arial', 'ui-sans-serif', 'system-ui', 'sans-serif'],

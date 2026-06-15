@@ -4,6 +4,19 @@ import PromptPanel from './components/PromptPanel.jsx'
 import { generatePrompt } from './lib/generatePrompt.js'
 import buildInputPack from './lib/buildInputPack.js'
 
+// External destinations the workflow hands users off to. Centralized
+// here so the WorkflowBanner step 4 link and the auto-open behavior on
+// Generate reference the same source of truth.
+const CHATGPT_URL = 'https://chatgpt.com/'
+const GOOGLE_DRIVE_URL =
+  'https://drive.google.com/drive/folders/1UmqZYJKohutPSlK_EjSsok0yq69rp4V4'
+
+// Brand teal used for the section ribbons under the WorkflowBanner,
+// the two main-row cards, and the WorkflowBanner step number badges.
+// The rainbow gradient is reserved for the header strip at the very
+// top of the dashboard.
+const RIBBON_TEAL = '#0B485B'
+
 export default function App() {
   // Snapshot of the form payload the user committed to via Generate
   // Prompt — `{ teamName, theme, environment, cues, isCustom }`.
@@ -29,6 +42,16 @@ export default function App() {
     }
     const promptText = generatePrompt(next)
     if (!promptText) return
+
+    // Open ChatGPT FIRST, synchronously, while we're still inside the
+    // user-gesture stack. Async work (clipboard / fetch / ZIP build)
+    // before this call would let popup blockers cancel the new tab.
+    try {
+      window.open(CHATGPT_URL, '_blank', 'noopener,noreferrer')
+    } catch (err) {
+      console.warn('Failed to open ChatGPT', err)
+    }
+
     setGenerated(next)
 
     // Fire-and-forget the two side effects users expect from a single
@@ -64,88 +87,140 @@ export default function App() {
       <Header />
 
       <main className="mx-auto w-full max-w-7xl px-4 pb-16 pt-6 sm:px-6 sm:pt-8 lg:px-8">
-        <p className="mb-6 text-base text-slate-700">
-          Design a Pride float concept for your team using curated
-          themes and AI-powered creative direction.
-        </p>
+        <WorkflowBanner />
 
-        <div className="grid grid-cols-1 gap-6 lg:grid-cols-5 lg:gap-8">
-          {/* 40% — steps card stacked above the input form */}
-          <div className="lg:col-span-2">
-            <div className="flex flex-col gap-6">
-              <StepsCard />
-              <FloatForm onSubmit={handleGenerate} />
-            </div>
-          </div>
-
-          {/* 60% — prompt workspace */}
-          <div className="lg:col-span-3">
-            <PromptPanel
-              prompt={prompt}
-              teamName={generated?.teamName ?? ''}
-              theme={generated?.theme ?? ''}
-            />
-          </div>
+        <div className="mt-6 grid grid-cols-1 items-start gap-6 lg:grid-cols-2 lg:gap-6">
+          <FloatForm onSubmit={handleGenerate} />
+          <PromptPanel
+            prompt={prompt}
+            teamName={generated?.teamName ?? ''}
+            theme={generated?.theme ?? ''}
+          />
         </div>
       </main>
     </div>
   )
 }
 
-function StepsCard() {
+// Full-width horizontal step row at the top of the page. The detailed
+// explainer for the workflow — readable left-to-right on desktop,
+// stacked on mobile. Step 4 carries the Submit handoff (Google Drive
+// folder link) so the closing action is visible at a glance.
+function WorkflowBanner() {
   return (
     <section
-      aria-labelledby="steps-card-title"
-      className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm"
+      aria-labelledby="workflow-title"
+      className="relative overflow-hidden rounded-3xl border border-slate-200 bg-white p-6 shadow-sm sm:p-7"
     >
+      <span
+        aria-hidden="true"
+        className="absolute inset-x-0 top-0 h-1"
+        style={{ backgroundColor: RIBBON_TEAL }}
+      />
       <h2
-        id="steps-card-title"
-        className="text-lg font-medium text-slate-900 tracking-tight"
+        id="workflow-title"
+        className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500"
       >
         How It Works
       </h2>
-
-      <div className="mt-4 space-y-5">
-        <StepSection number="1" title="Design Your Float">
-          <li>Enter your department or team name.</li>
-          <li>Choose a curated theme or create your own.</li>
-          <li>
-            Click <strong className="font-semibold">Generate Prompt</strong>.
-          </li>
-        </StepSection>
-
-        <StepSection number="2" title="Create Your Concept in ChatGPT">
-          <li>A prompt will be copied to your clipboard.</li>
-          <li>
-            A ZIP file containing the float templates will download
-            automatically.
-          </li>
-          <li>Open ChatGPT.</li>
-          <li>Upload the downloaded ZIP file.</li>
-          <li>Paste the copied prompt.</li>
-          <li>Generate your float concept.</li>
-        </StepSection>
-
-        <StepSection number="3" title="Submit Your Concept">
-          <li>Download your completed float concept from ChatGPT.</li>
-          <li>Send the image to Sarah Laue and Abby Gregory in Slack.</li>
-          <li>Include your department or team name with your submission.</li>
-        </StepSection>
-      </div>
+      <ol className="mt-4 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4 lg:gap-7">
+        <WorkflowStep
+          number={1}
+          title="Design"
+          bullets={['Enter team name', 'Pick a float theme or create your own']}
+        />
+        <WorkflowStep
+          number={2}
+          title="Generate"
+          bullets={[
+            <>
+              Click{' '}
+              <strong className="font-semibold text-slate-900">
+                Create My Prompt
+              </strong>
+            </>,
+            'Prompt copies to clipboard',
+            'ZIP file downloads to your device automatically',
+            'ChatGPT opens',
+          ]}
+        />
+        <WorkflowStep
+          number={3}
+          title="Create in ChatGPT"
+          bullets={[
+            'Upload the downloaded ZIP file',
+            'Paste the copied prompt',
+            'Generate your float concept',
+            'Download the completed image',
+          ]}
+        />
+        <WorkflowStep
+          number={4}
+          title="Submit"
+          bullets={[
+            'Upload the image to the Creative Services Google Drive folder',
+          ]}
+          action={{
+            href: GOOGLE_DRIVE_URL,
+            label: 'Open Google Drive Folder',
+          }}
+        />
+      </ol>
     </section>
   )
 }
 
-function StepSection({ number, title, children }) {
+function WorkflowStep({ number, title, bullets, action }) {
   return (
-    <div>
-      <h3 className="text-sm font-semibold text-slate-900">
-        <span className="text-slate-400">{number}.</span> {title}
-      </h3>
-      <ul className="mt-1.5 ml-5 list-disc space-y-1 text-sm text-slate-700 marker:text-slate-300">
-        {children}
+    <li className="flex flex-col">
+      <div className="flex items-center gap-3">
+        <span
+          className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full text-sm font-bold text-white shadow-sm shadow-slate-900/10"
+          style={{ backgroundColor: RIBBON_TEAL }}
+          aria-hidden="true"
+        >
+          {number}
+        </span>
+        <h3 className="text-base font-semibold text-slate-900">{title}</h3>
+      </div>
+      <ul className="mt-2 ml-5 list-disc space-y-1 text-sm leading-relaxed text-slate-600 marker:text-slate-300">
+        {bullets.map((bullet, i) => (
+          <li key={i}>{bullet}</li>
+        ))}
       </ul>
-    </div>
+      {action && (
+        <a
+          href={action.href}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mt-3 inline-flex items-center gap-1.5 self-start rounded-full border bg-white px-3.5 py-1.5 text-xs font-semibold transition hover:bg-slate-50"
+          style={{ borderColor: RIBBON_TEAL, color: RIBBON_TEAL }}
+        >
+          {action.label}
+          <ExternalLinkIcon />
+        </a>
+      )}
+    </li>
+  )
+}
+
+function ExternalLinkIcon() {
+  return (
+    <svg
+      width="12"
+      height="12"
+      viewBox="0 0 24 24"
+      fill="none"
+      aria-hidden="true"
+    >
+      <path
+        d="M14 4h6v6M20 4l-9 9M10 6H6a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-4"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
   )
 }
 
@@ -157,8 +232,8 @@ function Header() {
         <div className="mx-auto w-full max-w-7xl px-4 py-4 sm:px-6 sm:py-5 lg:px-8">
           <div className="flex flex-col items-center text-center">
             <Logo />
-            <h1 className="mt-3 font-display text-lg font-medium leading-tight text-slate-900 sm:text-xl lg:text-2xl">
-              Pride Float Generator
+            <h1 className="mt-3 font-display text-xl font-medium leading-tight text-slate-900 sm:text-2xl lg:text-3xl">
+              Pride Float Prompt Generator
             </h1>
           </div>
         </div>

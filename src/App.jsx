@@ -126,7 +126,17 @@ function WorkflowBanner() {
           number={3}
           title="Submit"
           bullets={[
-            'Rename the downloaded file to clearly identify your department or team',
+            <>
+              Rename the downloaded file as{' '}
+              <code className="rounded bg-slate-100 px-1 py-0.5 text-xs text-slate-700">
+                department_pridefloat
+              </code>{' '}
+              to clearly identify your team or department
+              <br />
+              <span className="text-xs text-slate-500">
+                e.g. creative services_pridefloat
+              </span>
+            </>,
             'Upload the image to the Pride at Zoro Google Drive folder',
           ]}
           action={{

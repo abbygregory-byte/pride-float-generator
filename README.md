@@ -49,7 +49,8 @@ CSS, typeset in Geist with Arial fallback.
      misses (e.g. clipboard permission denied) or if the user wants
      to re-paste later.
 4. In ChatGPT: paste the prompt, generate the float concept image,
-   download the result, rename it to identify your team or
+   download the result, rename it as `department_pridefloat` (e.g.
+   `creative services_pridefloat`) to identify your team or
    department, and upload to the **Pride at Zoro** Google Drive
    folder.
 

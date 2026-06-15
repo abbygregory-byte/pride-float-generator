@@ -1,10 +1,16 @@
 // Pure, synchronous prompt generator for the Zoro Pride Float Studio.
 // Emits an opener, theme-specific guidance (preset env+cues *or* a
 // custom wrapper paragraph), then a fixed sequence of all-caps
-// sections covering template fidelity, viewpoint, signage, Pride
-// expression, background, presentation style, and content limits,
-// closing with a summary block. Returns `null` when `theme` is empty
-// after trim.
+// sections covering text restrictions, template fidelity, viewpoint,
+// signage, Pride expression, background, presentation style, and
+// content limits, closing with a summary block. Returns `null` when
+// `theme` is empty after trim.
+//
+// TEXT RESTRICTIONS leads the section list because text leakage in
+// generated images (welcome signs, road signs, decorative
+// typography, etc.) was the dominant failure mode at preview, so we
+// want it to be the first hard constraint ChatGPT reads after the
+// theme framing.
 
 const CUSTOM_THEME_EXPRESSION =
   'Use the custom theme visually through large-scale parade float decorations, sculptural elements, color, texture, props, and symbolic imagery. Make the concept polished, dimensional, family-friendly, and suitable for a corporate Pride event.'
@@ -41,6 +47,23 @@ export function generatePrompt({
   }
 
   lines.push(
+    'TEXT RESTRICTIONS',
+    '- Do not render any text anywhere in the image.',
+    '- Do not include signs with words.',
+    '- Do not include road signs.',
+    '- Do not include destination markers.',
+    '- Do not include welcome signs.',
+    '- Do not include labels.',
+    '- Do not include banners.',
+    '- Do not include posters.',
+    '- Do not include placards.',
+    '- Do not include slogans.',
+    '- Do not include typography as decoration.',
+    '- Do not include letters, numbers, symbols, or readable characters.',
+    '- If signage is part of the selected environment, use blank decorative sign structures only.',
+    '- Signs may exist as decorative objects but must remain completely blank.',
+    '- The final image should contain zero readable text.',
+    '',
     'TEMPLATE PRESERVATION',
     '- Use the attached float template as the structural base.',
     '- Preserve the float shape, proportions, wheel locations, and overall silhouette.',
